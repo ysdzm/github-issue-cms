@@ -14,10 +14,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 'article' ラベルがある場合のみ次に進む
-      - name: Check if 'article' label exists
-        if: contains(join(github.event.issue.labels.*.name, ','), 'article')
-
       # Issue 情報を取得
       - name: Get Issue Data
         id: issue_data
