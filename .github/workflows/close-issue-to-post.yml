@@ -25,7 +25,7 @@ jobs:
       - name: Create Markdown File
         run: |
           mkdir -p posts
-          cat << EOF > posts/issue-${{ env.issue_number }}.md
+          cat << EOF > content/posts/issue-${{ env.issue_number }}.md
           ---
           title: "${{ env.title }}"
           date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
