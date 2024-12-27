@@ -7,13 +7,21 @@ on:
 
 jobs:
   create-post:
-    if: ${{ github.event.issue.labels.*.name contains 'article' }}
     runs-on: ubuntu-latest
 
     steps:
       # リポジトリをチェックアウト
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      # 'article' ラベルがあるか確認
+      - name: Check for 'article' label
+        id: check_label
+        run: |
+          if [[ "${{ toJson(github.event.issue.labels) }}" != *'"article"'* ]]; then
+            echo "No 'article' label found. Skipping this job."
+            exit 1
+          fi
 
       # Issue 情報を取得
       - name: Get Issue Data
@@ -27,7 +35,7 @@ jobs:
       - name: Create Markdown File
         run: |
           mkdir -p posts
-          cat << EOF > content/posts/issue-${{ env.issue_number }}.md
+          cat << EOF > posts/issue-${{ env.issue_number }}.md
           ---
           title: "${{ env.title }}"
           date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
