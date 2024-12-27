@@ -41,6 +41,6 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add posts/issue-${{ env.issue_number }}.md
+          git add content/posts/issue-${{ env.issue_number }}.md
           git commit -m "Add post for Issue #${{ env.issue_number }}"
           git push origin main
