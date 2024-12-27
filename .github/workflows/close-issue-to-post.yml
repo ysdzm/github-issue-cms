@@ -32,6 +32,8 @@ jobs:
           ---
           
           ${{ env.body }}
+
+          > この記事は[Issue${{ env.issue_number }}](https://github.com/ysdzm/github-issue-cms/issues/${{ env.issue_number }})を元に生成されました。
           EOF
 
       # ファイルをコミットしてプッシュ
