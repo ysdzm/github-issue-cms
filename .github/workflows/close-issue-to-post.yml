@@ -16,11 +16,10 @@ jobs:
 
       # Issue 情報を取得
       - name: Get Issue Data
-        id: issue_data
         run: |
           echo "title=${{ github.event.issue.title }}" >> $GITHUB_ENV
-          echo "body=${{ github.event.issue.body }}" >> $GITHUB_ENV
           echo "issue_number=${{ github.event.issue.number }}" >> $GITHUB_ENV
+          echo -e "body<<EOF\n${{ github.event.issue.body }}\nEOF" >> $GITHUB_ENV
 
       # Markdown ファイルを作成
       - name: Create Markdown File
