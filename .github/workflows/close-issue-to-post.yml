@@ -14,14 +14,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 'article' ラベルがあるか確認
-      - name: Check for 'article' label
-        id: check_label
-        run: |
-          if [[ "${{ toJson(github.event.issue.labels) }}" != *'"article"'* ]]; then
-            echo "No 'article' label found. Skipping this job."
-            exit 1
-          fi
+      # 'article' ラベルがある場合のみ次に進む
+      - name: Check if 'article' label exists
+        if: contains(join(github.event.issue.labels.*.name, ','), 'article')
 
       # Issue 情報を取得
       - name: Get Issue Data
