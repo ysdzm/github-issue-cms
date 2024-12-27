@@ -1,0 +1,46 @@
+name: Issue to Post
+
+on:
+  issues:
+    types:
+      - closed
+
+jobs:
+  create-post:
+    if: ${{ github.event.issue.labels.*.name contains 'article' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # リポジトリをチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Issue 情報を取得
+      - name: Get Issue Data
+        id: issue_data
+        run: |
+          echo "title=${{ github.event.issue.title }}" >> $GITHUB_ENV
+          echo "body=${{ github.event.issue.body }}" >> $GITHUB_ENV
+          echo "issue_number=${{ github.event.issue.number }}" >> $GITHUB_ENV
+
+      # Markdown ファイルを作成
+      - name: Create Markdown File
+        run: |
+          mkdir -p posts
+          cat << EOF > content/posts/issue-${{ env.issue_number }}.md
+          ---
+          title: "${{ env.title }}"
+          date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          ---
+          
+          ${{ env.body }}
+          EOF
+
+      # ファイルをコミットしてプッシュ
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add posts/issue-${{ env.issue_number }}.md
+          git commit -m "Add post for Issue #${{ env.issue_number }}"
+          git push
