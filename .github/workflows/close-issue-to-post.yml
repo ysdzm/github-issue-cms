@@ -36,9 +36,11 @@ jobs:
 
       # ファイルをコミットしてプッシュ
       - name: Commit and Push Changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git add posts/issue-${{ env.issue_number }}.md
           git commit -m "Add post for Issue #${{ env.issue_number }}"
-          git push
+          git push origin main
